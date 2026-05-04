@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Rumah Makan Dapa</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+    margin: 0;
+    text-align: center;
+}
+
+header {
+    color: white;
+    padding: 20px;
+}
+
+.menu {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    margin: 10px;
+    width: 220px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+button {
+    margin: 5px;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.tambah { background: #28a745; color: white; }
+.kurang { background: #dc3545; color: white; }
+
+button:hover {
+    opacity: 0.8;
+}
+
+.container {
+    background: white;
+    margin: 20px auto;
+    padding: 15px;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 15px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+.total {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.reset {
+    background: black;
+    color: white;
+    margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🍜 Rumah Makan Dapa</h1>
+<p>Kasir Mini by Dapa 😎</p>
+</header>
+
+<div class="menu">
+
+<div class="card">
+<h3>Nasi Goreng</h3>
+<p>Rp 15.000</p>
+<button class="tambah" onclick="tambah('Nasi Goreng',15000)">+</button>
+<button class="kurang" onclick="kurang('Nasi Goreng',15000)">-</button>
+</div>
+
+<div class="card">
+<h3>Mie Ayam</h3>
+<p>Rp 12.000</p>
+<button class="tambah" onclick="tambah('Mie Ayam',12000)">+</button>
+<button class="kurang" onclick="kurang('Mie Ayam',12000)">-</button>
+</div>
+
+<div class="card">
+<h3>Ayam Geprek</h3>
+<p>Rp 18.000</p>
+<button class="tambah" onclick="tambah('Ayam Geprek',18000)">+</button>
+<button class="kurang" onclick="kurang('Ayam Geprek',18000)">-</button>
+</div>
+
+</div>
+
+<div class="container">
+<h3>🧾 Pesanan</h3>
+<ul id="listPesanan"></ul>
+
+<div class="total">
+Total: Rp <span id="totalHarga">0</span>
+</div>
+
+<button class="reset" onclick="resetAll()">Reset</button>
+</div>
+
+<script>
+let pesanan = {};
+let total = 0;
+
+function tambah(nama, harga) {
+    if (!pesanan[nama]) pesanan[nama] = {qty: 0, harga: harga};
+    pesanan[nama].qty++;
+    total += harga;
+    update();
+}
+
+function kurang(nama, harga) {
+    if (pesanan[nama] && pesanan[nama].qty > 0) {
+        pesanan[nama].qty--;
+        total -= harga;
+        if (pesanan[nama].qty === 0) delete pesanan[nama];
+        update();
+    }
+}
+
+function update() {
+    let list = document.getElementById("listPesanan");
+    list.innerHTML = "";
+
+    for (let item in pesanan) {
+        let li = document.createElement("li");
+        li.innerText = item + " x" + pesanan[item].qty;
+        list.appendChild(li);
+    }
+
+    document.getElementById("totalHarga").innerText = total;
+}
+
+function resetAll() {
+    pesanan = {};
+    total = 0;
+    update();
+}
+</script>
+
+</body>
+</html>
